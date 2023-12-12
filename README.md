@@ -1,0 +1,2 @@
+# myGoProject
+private study

@@ -1,0 +1,112 @@
+info:
+  contact: {}
+paths:
+  /problem-detail:
+    get:
+      consumes:
+      - application/json
+      description: 获取问题详情
+      parameters:
+      - description: problem identity
+        in: query
+        name: identity
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":"200","msg":"","data":""}'
+          schema:
+            type: string
+      summary: 问题详情
+      tags:
+      - 公共方法
+  /problem-list:
+    get:
+      consumes:
+      - application/json
+      description: 获取问题列表
+      parameters:
+      - description: page, 默认为1
+        in: query
+        name: page
+        type: integer
+      - description: size, 默认为20
+        in: query
+        name: size
+        type: integer
+      - description: keyword
+        in: query
+        name: keyword
+        type: string
+      - description: category_identity
+        in: query
+        name: category_identity
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":"200","msg":"","data":""}'
+          schema:
+            type: string
+      summary: 问题列表
+      tags:
+      - 公共方法
+  /submit-list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: page, 默认为1
+        in: query
+        name: page
+        type: integer
+      - description: size, 默认为20
+        in: query
+        name: size
+        type: integer
+      - description: problem_identity
+        in: query
+        name: problem_identity
+        type: string
+      - description: user_identity
+        in: query
+        name: user_identity
+        type: string
+      - description: status
+        in: query
+        name: status
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":"200","msg":"","data":""}'
+          schema:
+            type: string
+      summary: 提交列表
+      tags:
+      - 公共方法
+  /user-detail:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户详情
+      parameters:
+      - description: user identity
+        in: query
+        name: identity
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":"200","msg":"","data":""}'
+          schema:
+            type: string
+      summary: 用户详情
+      tags:
+      - 公共方法
+swagger: "2.0"

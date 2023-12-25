@@ -1,5 +1,9 @@
 package main
 
+import (
+	"onlinePractice/router"
+)
+
 /*
 	项目：基于Gin、Gorm、Vue实现的在线做题系统
 	后端：golang、gin、gorm
@@ -9,5 +13,7 @@ package main
 */
 
 func main() {
+	r := router.Router()
 
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
 }

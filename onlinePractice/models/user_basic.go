@@ -2,7 +2,7 @@ package models
 
 import "gorm.io/gorm"
 
-type User struct {
+type UserBasic struct {
 	gorm.Model
 	Identity string `gorm:"column:identity;type:varchar(36);" json:"identity"` //用户的唯一标识
 	Name     string `gorm:"column:name;type:varchar(100);" json:"name"`        //用户名
@@ -12,6 +12,6 @@ type User struct {
 }
 
 // 定义表名，gorm默认创建的表名会加s
-func (table *User) TableName() string {
-	return "user"
+func (table *UserBasic) TableName() string {
+	return "user_basic"
 }

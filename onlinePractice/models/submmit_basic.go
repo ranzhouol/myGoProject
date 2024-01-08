@@ -22,7 +22,9 @@ func (table *SubmmitBasic) TableName() string {
 // GetSubmitList 获取提交列表
 func GetSubmitList(problemIdentity, userIdentity string, status int) *gorm.DB {
 	// Preload 预热，相当于外键表连接
-	tx := DB.Model(new(SubmmitBasic)).Preload("ProblemBasic").Preload("UserBasic")
+	tx := DB.Model(new(SubmmitBasic)).Preload("ProblemBasic", func(db *gorm.DB) *gorm.DB {
+		return db.Omit("content")
+	}).Preload("UserBasic")
 
 	// 条件查询
 	if problemIdentity != "" {

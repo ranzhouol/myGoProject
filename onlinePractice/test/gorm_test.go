@@ -16,7 +16,7 @@ func TestGormTest(t *testing.T) {
 	}
 
 	// 查询 problem表
-	data := make([]*models.Problem, 0)
+	data := make([]*models.ProblemBasic, 0)
 	err = db.Find(&data).Error
 	if err != nil {
 		t.Fatal(err)

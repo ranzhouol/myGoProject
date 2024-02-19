@@ -2,8 +2,11 @@ package helper
 
 import (
 	"crypto/md5"
+	"crypto/tls"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/jordan-wright/email"
+	"net/smtp"
 )
 
 func GetMd5(s string) string {
@@ -51,4 +54,23 @@ func AnalyseToken(tokenString string) (*UserClaims, error) {
 	}
 
 	return UserClaim, nil
+}
+
+// SendCode 发送验证码
+func SendCode(toUserEmail, code string) error {
+	e := email.NewEmail()
+	e.From = "测试人 <ranzhouol@163.com>"
+	e.To = []string{toUserEmail}
+	e.Subject = "验证码发送测试"
+	e.Text = []byte("Text Body is, of course, supported!")
+	e.HTML = []byte("你的验证码是:<b>" + code + "</b>")
+	// 返回 EOF 错误时，关闭SSL
+	err := e.SendWithTLS("smtp.163.com:465",
+		smtp.PlainAuth("", "ranzhouol@163.com", "QFTPLLCJVEWAVEUX", "smtp.163.com"),
+		&tls.Config{InsecureSkipVerify: true, ServerName: "smtp.163.com"})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

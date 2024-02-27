@@ -6,7 +6,11 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jordan-wright/email"
+	uuid "github.com/satori/go.uuid"
+	"math/rand"
 	"net/smtp"
+	"strconv"
+	"time"
 )
 
 func GetMd5(s string) string {
@@ -73,4 +77,22 @@ func SendCode(toUserEmail, code string) error {
 	}
 
 	return nil
+}
+
+// GetUUid 生成uuid
+func GetUUid() string {
+	return uuid.NewV4().String()
+}
+
+// 生成验证码
+func GetRandom() string {
+	// 在生成随机数之前，我们需要为随机数生成器提供一个种子值，以确保每次运行程序时生成的随机数序列不同
+	rand.Seed(time.Now().Unix())
+
+	code := ""
+	for i := 0; i < 6; i++ {
+		code += strconv.Itoa(rand.Intn(10))
+	}
+
+	return code
 }

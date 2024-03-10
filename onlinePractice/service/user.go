@@ -5,8 +5,10 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"net/http"
+	"onlinePractice/define"
 	"onlinePractice/helper"
 	"onlinePractice/models"
+	"strconv"
 	"time"
 )
 
@@ -228,6 +230,43 @@ func Register(c *gin.Context) {
 		"code": 200,
 		"data": map[string]interface{}{
 			"token": token,
+		},
+	})
+}
+
+// GetRankList
+// @Tags 公共方法
+// @Summary 用户排行榜
+// @Param page query int false "page, 默认为1"
+// @Param size query int false "size, 默认为20"
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":"200","msg":"","data":""}"
+// @Router /rank-list [get]
+func GetRankList(c *gin.Context) {
+	// 获取参数,没有取默认值
+	size, _ := strconv.Atoi(c.DefaultQuery("size", define.DefaultSize))
+	page, _ := strconv.Atoi(c.DefaultQuery("page", define.DefaultPage))
+	page = (page - 1) * size //分页查询的起始索引
+
+	var count int64
+	dataList := make([]*models.UserBasic, 0)
+	// 按照完成问题个数降序排序，若相同，按照提交次数升序（即完成问题越多、提交次数越少，排名越高）
+	err := models.DB.Model(&models.UserBasic{}).Count(&count).Order("finish_problem_num DESC, submit_num ASC").
+		Offset(page).Limit(size).First(&dataList).Error
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "get rank list Error:" + err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": map[string]interface{}{
+			"list":  dataList,
+			"Count": count,
 		},
 	})
 }

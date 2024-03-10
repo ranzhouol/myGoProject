@@ -20,10 +20,9 @@ func Init() *gorm.DB {
 
 	// 建表
 	if err := db.AutoMigrate(
+		&SubmmitBasic{},
 		&CategoryBasic{},
 		&ProblemBasic{},
-		&ProblemCategory{},
-		&SubmmitBasic{},
 		&UserBasic{},
 	); err != nil {
 		log.Println("gorm AutoMigrate error: ", err)

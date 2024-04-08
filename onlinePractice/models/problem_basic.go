@@ -5,8 +5,8 @@ import (
 )
 
 type ProblemBasic struct {
-	//gorm.Model
-	model
+	gorm.Model
+	//model
 	Identity string `gorm:"column:identity;type:varchar(36);" json:"identity"` //问题表的唯一标识
 	//ProblemCategories []*ProblemCategory `gorm:"foreignKey:problem_id;references:id"`               //关联问题分类表
 	Title      string `gorm:"column:title;type:varchar(255)" json:"title"`     //问题标题

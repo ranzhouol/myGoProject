@@ -5,7 +5,8 @@ import (
 )
 
 type SubmmitBasic struct {
-	gorm.Model      `gorm:"table:submmit_basic"`
+	//gorm.Model `gorm:"table:submmit_basic"`
+	model
 	Identity        string       `gorm:"column:identity;type:varchar(36);" json:"identity"`                       //提交表的唯一标识
 	ProblemIdentity string       `gorm:"column:problem_identity;type:varchar(36);index;" json:"problem_identity"` //问题表的唯一标识
 	ProblemBasic    ProblemBasic `gorm:"foreignKey:Identity;references:ProblemIdentity"`                          //关联问题表

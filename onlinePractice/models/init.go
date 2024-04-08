@@ -1,33 +1,44 @@
 package models
 
 import (
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
 )
 
-var DB = Init()
+var DB *gorm.DB
 var RedisServer = InitRedis()
 
-func Init() *gorm.DB {
+func Init() {
 	// 连接数据库
 	dsn := "root:ranzhou@tcp(192.168.239.100:3306)/gin_gorm_oj?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	var err error
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Println("gorm Init error: ", err)
+		return
 	}
 
+	if DB == nil {
+		log.Println("DB is nil")
+		return
+	}
+
+	fmt.Println("连接数据库成功", DB.Name())
 	// 建表
-	if err := db.AutoMigrate(
+	registerTables()
+}
+
+func registerTables() {
+	if err := DB.AutoMigrate(
 		&SubmmitBasic{},
 		&CategoryBasic{},
-		&ProblemBasic{},
 		&UserBasic{},
 	); err != nil {
-		log.Println("gorm AutoMigrate error: ", err)
+		log.Fatalf("Create Db tables Error: %v", err.Error())
 	}
-	return db
 }
 
 func InitRedis() *redis.Client {

@@ -253,7 +253,7 @@ func GetRankList(c *gin.Context) {
 	dataList := make([]*models.UserBasic, 0)
 	// 按照完成问题个数降序排序，若相同，按照提交次数升序（即完成问题越多、提交次数越少，排名越高）
 	err := models.DB.Model(&models.UserBasic{}).Count(&count).Order("finish_problem_num DESC, submit_num ASC").
-		Offset(page).Limit(size).First(&dataList).Error
+		Offset(page).Limit(size).Find(&dataList).Error
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
